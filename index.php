@@ -45,12 +45,23 @@
 </head>
 <body>
     <div class="calculator">
-        <form action="calculate.php" method="post">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <label for="dob">Masukkan Tanggal Lahir:</label>
-            <input type="date" id="dob" name="dob" required>
+            <input type="date" id="dob" name="dob[]" required>
+            <button type="button" onclick="tambahInput()">Tambah Input</button>
             <button type="submit">Hitung</button>
         </form>
     </div>
+
+    <script>
+        function tambahInput() {
+            var container = document.querySelector('.calculator');
+            var input = document.createElement('input');
+            input.type = 'date';
+            input.name = 'dob[]';
+            container.insertBefore(input, container.lastChild);
+        }
+    </script>
 </body>
 </html>
 
@@ -63,14 +74,15 @@ function hitungUsia($tanggal_lahir) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $dob = $_POST["dob"];
+    if (isset($_POST["dob"])) {
+        $tanggals_lahir = $_POST["dob"];
 
-    // Memanggil fungsi hitungUsia untuk mendapatkan usia
-    $usia = hitungUsia($dob);
-
-    // Menampilkan hasil dengan menggunakan perulangan
-    echo "Tanggal Lahir Anda adalah: " . $dob . "<br>";
-    echo "Usia Anda adalah: " . $usia . " tahun.";
+        // Menampilkan hasil dengan menggunakan perulangan
+        foreach ($tanggals_lahir as $dob) {
+            $usia = hitungUsia($dob);
+            echo "Tanggal Lahir Anda adalah: " . $dob . "<br>";
+            echo "Usia Anda adalah: " . $usia . " tahun.<br><br>";
+        }
+    }
 }
 ?>
-
