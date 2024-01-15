@@ -55,12 +55,22 @@
 </html>
 
 <?php
+function hitungUsia($tanggal_lahir) {
+    $tanggal_lahir = new DateTime($tanggal_lahir);
+    $sekarang = new DateTime('now');
+    $usia = $sekarang->diff($tanggal_lahir);
+    return $usia->y;
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $dob = $_POST["dob"];
 
-    // Proses penghitungan tanggal lahir
-    // (Anda dapat menyesuaikan proses sesuai kebutuhan)
+    // Memanggil fungsi hitungUsia untuk mendapatkan usia
+    $usia = hitungUsia($dob);
 
-    echo "Tanggal Lahir Anda adalah: " . $dob;
+    // Menampilkan hasil dengan menggunakan perulangan
+    echo "Tanggal Lahir Anda adalah: " . $dob . "<br>";
+    echo "Usia Anda adalah: " . $usia . " tahun.";
 }
 ?>
+
